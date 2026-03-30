@@ -4,6 +4,7 @@ const APP_STATE = {
     goal: 10000,
     strideLength: 75, // cm
     weight: 70, // kg
+    height: 170, // cm
     waterGlasses: 0,
     autoWalkInterval: null,
     streak: 0,
@@ -971,6 +972,7 @@ function populateSettings() {
     document.getElementById('goalInput').value = APP_STATE.goal;
     document.getElementById('strideInput').value = APP_STATE.strideLength;
     document.getElementById('weightInput').value = APP_STATE.weight;
+    document.getElementById('heightInput').value = APP_STATE.height;
     document.getElementById('notifToggle').checked = APP_STATE.settings.notifications;
     document.getElementById('soundToggle').checked = APP_STATE.settings.sound;
     document.getElementById('reminderToggle').checked = APP_STATE.settings.reminders;
@@ -981,6 +983,7 @@ function saveSettings() {
     APP_STATE.goal = parseInt(document.getElementById('goalInput').value) || 10000;
     APP_STATE.strideLength = parseInt(document.getElementById('strideInput').value) || 75;
     APP_STATE.weight = parseInt(document.getElementById('weightInput').value) || 70;
+    APP_STATE.height = parseInt(document.getElementById('heightInput').value) || 170;
     APP_STATE.settings.notifications = document.getElementById('notifToggle').checked;
     APP_STATE.settings.sound = document.getElementById('soundToggle').checked;
     APP_STATE.settings.reminders = document.getElementById('reminderToggle').checked;
