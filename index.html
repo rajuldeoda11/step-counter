@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StepSync - Advanced Step Counter</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-icon">
+                <i class="fas fa-shoe-prints"></i>
+            </div>
+            <h1>StepSync</h1>
+            <p>Your Advanced Step Companion</p>
+            <div class="splash-loader">
+                <div class="splash-loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1 class="logo"><i class="fas fa-shoe-prints"></i> StepSync</h1>
+            </div>
+            <div class="header-right">
+                <button id="themeToggle" class="icon-btn" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="settingsBtn" class="icon-btn" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button id="profileBtn" class="icon-btn" title="Profile">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-tab="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" data-tab="activity">
+                <i class="fas fa-chart-line"></i>
+                <span>Activity</span>
+            </button>
+            <button class="nav-item" data-tab="challenges">
+                <i class="fas fa-trophy"></i>
+                <span>Challenges</span>
+            </button>
+            <button class="nav-item" data-tab="history">
+                <i class="fas fa-calendar-alt"></i>
+                <span>History</span>
+            </button>
+            <button class="nav-item" data-tab="social">
+                <i class="fas fa-users"></i>
+                <span>Social</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <section id="dashboard" class="tab-content active">
+                <!-- Date & Greeting -->
+                <div class="greeting-section">
+                    <h2 id="greetingText">Good Morning!</h2>
+                    <p id="dateText" class="date-text"></p>
+                </div>
+
+                <!-- Circular Progress -->
+                <div class="step-counter-card">
+                    <div class="circular-progress-container">
+                        <svg class="circular-progress" viewBox="0 0 200 200">
+                            <circle class="progress-bg" cx="100" cy="100" r="85"></circle>
+                            <circle id="progressCircle" class="progress-bar" cx="100" cy="100" r="85"></circle>
+                        </svg>
+                        <div class="progress-content">
+                            <div class="step-icon-animated">
+                                <i class="fas fa-walking"></i>
+                            </div>
+                            <span id="stepCount" class="step-count">0</span>
+                            <span class="step-label">steps</span>
+                            <span id="goalText" class="goal-text">Goal: 10,000</span>
+                        </div>
+                    </div>
+
+                    <!-- Step Controls -->
+                    <div class="step-controls">
+                        <button id="subtractSteps" class="control-btn subtract">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button id="addStep" class="control-btn add-single">
+                            <i class="fas fa-plus"></i>
+                            <span>+1</span>
+                        </button>
+                        <button id="addTenSteps" class="control-btn add-ten">
+                            <i class="fas fa-forward"></i>
+                            <span>+10</span>
+                        </button>
+                        <button id="addHundredSteps" class="control-btn add-hundred">
+                            <i class="fas fa-forward-fast"></i>
+                            <span>+100</span>
+                        </button>
+                        <button id="addCustomSteps" class="control-btn add-custom">
+                            <i class="fas fa-keyboard"></i>
+                            <span>Custom</span>
+                        </button>
+                    </div>
+
+                    <!-- Auto Walk Toggle -->
+                    <div class="auto-walk-section">
+                        <div class="auto-walk-info">
+                            <i class="fas fa-person-walking"></i>
+                            <span>Auto Walk Simulation</span>
+                        </div>
+                        <div class="speed-control">
+                            <label>Speed:</label>
+                            <select id="walkSpeed">
+                                <option value="2000">Slow</option>
+                                <option value="1000" selected>Normal</option>
+                                <option value="500">Fast</option>
+                                <option value="200">Running</option>
+                            </select>
+                        </div>
+                        <button id="autoWalkBtn" class="auto-walk-btn">
+                            <i class="fas fa-play"></i> Start
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card calories">
+                        <div class="stat-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span id="caloriesBurned" class="stat-value">0</span>
+                            <span class="stat-label">Calories</span>
+                        </div>
+                    </div>
+                    <div class="stat-card distance">
+                        <div class="stat-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span id="distanceCovered" class="stat-value">0.00</span>
+                            <span class="stat-label">km</span>
+                        </div>
+                    </div>
+                    <div class="stat-card time">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span id="activeTime" class="stat-value">0m</span>
+                            <span class="stat-label">Active Time</span>
+                        </div>
+                    </div>
+                    <div class="stat-card pace">
+                        <div class="stat-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span id="currentPace" class="stat-value">0</span>
+                            <span class="stat-label">steps/min</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hourly Breakdown -->
+                <div class="card hourly-card">
+                    <h3><i class="fas fa-chart-bar"></i> Today's Activity</h3>
+                    <div class="hourly-chart" id="hourlyChart"></div>
+                </div>
+
+                <!-- Streak Card -->
+                <div class="card streak-card">
+                    <div class="streak-info">
+                        <div class="streak-flame">
+                            <i class="fas fa-fire-flame-curved"></i>
+                        </div>
+                        <div>
+                            <h3 id="streakCount">0</h3>
+                            <p>Day Streak</p>
+                        </div>
+                    </div>
+                    <div class="streak-message" id="streakMessage">
+                        Start walking to build your streak!
+                    </div>
+                </div>
+
+                <!-- Water Intake Tracker -->
+                <div class="card water-card">
+                    <h3><i class="fas fa-glass-water"></i> Water Intake</h3>
+                    <div class="water-tracker">
+                        <div class="water-glasses" id="waterGlasses"></div>
+                        <p id="waterCount">0 / 8 glasses</p>
+                        <button id="addWaterBtn" class="water-btn">
+                            <i class="fas fa-plus"></i> Add Glass
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BMI Calculator -->
+                <div class="card bmi-card">
+                    <h3><i class="fas fa-weight-scale"></i> BMI Calculator</h3>
+                    <div class="bmi-inputs">
+                        <div class="input-group">
+                            <label>Weight (kg)</label>
+                            <input type="number" id="bmiWeight" placeholder="70">
+                        </div>
+                        <div class="input-group">
+                            <label>Height (cm)</label>
+                            <input type="number" id="bmiHeight" placeholder="170">
+                        </div>
+                        <button id="calcBmiBtn" class="btn-primary">Calculate</button>
+                    </div>
+                    <div id="bmiResult" class="bmi-result hidden">
+                        <div class="bmi-value" id="bmiValue">0</div>
+                        <div class="bmi-category" id="bmiCategory">-</div>
+                        <div class="bmi-bar">
+                            <div class="bmi-indicator" id="bmiIndicator"></div>
+                        </div>
+                        <div class="bmi-labels">
+                            <span>Underweight</span>
+                            <span>Normal</span>
+                            <span>Overweight</span>
+                            <span>Obese</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Activity Tab -->
+            <section id="activity" class="tab-content">
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> Activity Analytics</h2>
+
+                <!-- Period Selector -->
+                <div class="period-selector">
+                    <button class="period-btn active" data-period="week">Week</button>
+                    <button class="period-btn" data-period="month">Month</button>
+                    <button class="period-btn" data-period="year">Year</button>
+                </div>
+
+                <!-- Chart -->
+                <div class="card chart-card">
+                    <div class="chart-header">
+                        <h3>Steps Overview</h3>
+                        <span id="avgSteps" class="avg-badge">Avg: 0</span>
+                    </div>
+                    <div class="bar-chart" id="barChart"></div>
+                </div>
+
+                <!-- Weekly Summary -->
+                <div class="card">
+                    <h3>Weekly Summary</h3>
+                    <div class="summary-stats">
+                        <div class="summary-item">
+                            <i class="fas fa-shoe-prints"></i>
+                            <div>
+                                <span id="weeklySteps" class="summary-value">0</span>
+                                <span class="summary-label">Total Steps</span>
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <i class="fas fa-fire"></i>
+                            <div>
+                                <span id="weeklyCalories" class="summary-value">0</span>
+                                <span class="summary-label">Calories Burned</span>
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <i class="fas fa-route"></i>
+                            <div>
+                                <span id="weeklyDistance" class="summary-value">0 km</span>
+                                <span class="summary-label">Distance</span>
+                            </div>
+                        </div>
+                        <div class="summary-item">
+                            <i class="fas fa-bullseye"></i>
+                            <div>
+                                <span id="weeklyGoals" class="summary-value">0/7</span>
+                                <span class="summary-label">Goals Met</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Records -->
+                <div class="card records-card">
+                    <h3><i class="fas fa-medal"></i> Personal Records</h3>
+                    <div class="records-list">
+                        <div class="record-item">
+                            <div class="record-icon gold"><i class="fas fa-crown"></i></div>
+                            <div class="record-info">
+                                <span class="record-label">Best Day</span>
+                                <span id="bestDay" class="record-value">0 steps</span>
+                            </div>
+                        </div>
+                        <div class="record-item">
+                            <div class="record-icon silver"><i class="fas fa-fire"></i></div>
+                            <div class="record-info">
+                                <span class="record-label">Longest Streak</span>
+                                <span id="longestStreak" class="record-value">0 days</span>
+                            </div>
+                        </div>
+                        <div class="record-item">
+                            <div class="record-icon bronze"><i class="fas fa-calendar-check"></i></div>
+                            <div class="record-info">
+                                <span class="record-label">Total Active Days</span>
+                                <span id="totalActiveDays" class="record-value">0 days</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Challenges Tab -->
+            <section id="challenges" class="tab-content">
+                <h2 class="section-title"><i class="fas fa-trophy"></i> Challenges & Achievements</h2>
+
+                <!-- Active Challenge -->
+                <div class="card active-challenge">
+                    <div class="challenge-header">
+                        <span class="challenge-badge">🏃 Active Challenge</span>
+                        <span id="challengeTimeLeft" class="time-left">--</span>
+                    </div>
+                    <h3 id="challengeName">No Active Challenge</h3>
+                    <div class="challenge-progress">
+                        <div class="challenge-bar">
+                            <div id="challengeBar" class="challenge-fill" style="width: 0%"></div>
+                        </div>
+                        <span id="challengePercent">0%</span>
+                    </div>
+                    <div class="challenge-actions">
+                        <button id="startChallengeBtn" class="btn-primary">Start Challenge</button>
+                    </div>
+                </div>
+
+                <!-- Challenge List -->
+                <div class="card">
+                    <h3>Available Challenges</h3>
+                    <div class="challenge-list" id="challengeList"></div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="card">
+                    <h3><i class="fas fa-award"></i> Achievements</h3>
+                    <div class="achievements-grid" id="achievementsGrid"></div>
+                </div>
+
+                <!-- Level System -->
+                <div class="card level-card">
+                    <h3><i class="fas fa-star"></i> Your Level</h3>
+                    <div class="level-display">
+                        <div class="level-badge" id="levelBadge">1</div>
+                        <div class="level-info">
+                            <h4 id="levelTitle">Beginner Walker</h4>
+                            <div class="level-progress">
+                                <div class="level-bar">
+                                    <div id="levelFill" class="level-fill" style="width: 0%"></div>
+                                </div>
+                                <span id="levelXP">0 / 1000 XP</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Tab -->
+            <section id="history" class="tab-content">
+                <h2 class="section-title"><i class="fas fa-calendar-alt"></i> History</h2>
+
+                <!-- Calendar View -->
+                <div class="card calendar-card">
+                    <div class="calendar-header">
+                        <button id="prevMonth" class="icon-btn"><i class="fas fa-chevron-left"></i></button>
+                        <h3 id="calendarMonth">January 2024</h3>
+                        <button id="nextMonth" class="icon-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="calendar-days">
+                            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                        </div>
+                        <div id="calendarDates" class="calendar-dates"></div>
+                    </div>
+                </div>
+
+                <!-- History List -->
+                <div class="card">
+                    <div class="history-header">
+                        <h3>Recent Activity</h3>
+                        <button id="exportDataBtn" class="btn-secondary">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                    <div id="historyList" class="history-list"></div>
+                </div>
+
+                <!-- Reset Section -->
+                <div class="card danger-card">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Danger Zone</h3>
+                    <button id="resetTodayBtn" class="btn-danger">
+                        <i class="fas fa-redo"></i> Reset Today's Steps
+                    </button>
+                    <button id="resetAllBtn" class="btn-danger">
+                        <i class="fas fa-trash"></i> Clear All Data
+                    </button>
+                </div>
+            </section>
+
+            <!-- Social Tab -->
+            <section id="social" class="tab-content">
+                <h2 class="section-title"><i class="fas fa-users"></i> Community</h2>
+
+                <!-- Leaderboard -->
+                <div class="card">
+                    <h3><i class="fas fa-ranking-star"></i> Leaderboard</h3>
+                    <div id="leaderboard" class="leaderboard"></div>
+                </div>
+
+                <!-- Share Progress -->
+                <div class="card share-card">
+                    <h3><i class="fas fa-share-alt"></i> Share Your Progress</h3>
+                    <div id="sharePreview" class="share-preview">
+                        <div class="share-content">
+                            <h4>🏃 My StepSync Progress</h4>
+                            <p id="shareSteps">0 steps today!</p>
+                            <p id="shareStreak">🔥 0 day streak</p>
+                        </div>
+                    </div>
+                    <div class="share-buttons">
+                        <button class="share-btn twitter" id="shareTwitter">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </button>
+                        <button class="share-btn whatsapp" id="shareWhatsapp">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                        <button class="share-btn copy" id="shareCopy">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Daily Tips -->
+                <div class="card tips-card">
+                    <h3><i class="fas fa-lightbulb"></i> Daily Tip</h3>
+                    <div id="dailyTip" class="daily-tip">
+                        <p>Loading tip...</p>
+                    </div>
+                    <button id="newTipBtn" class="btn-secondary">
+                        <i class="fas fa-refresh"></i> New Tip
+                    </button>
+                </div>
+
+                <!-- Mood Tracker -->
+                <div class="card mood-card">
+                    <h3><i class="fas fa-face-smile"></i> How are you feeling?</h3>
+                    <div class="mood-selector">
+                        <button class="mood-btn" data-mood="great">😄</button>
+                        <button class="mood-btn" data-mood="good">🙂</button>
+                        <button class="mood-btn" data-mood="okay">😐</button>
+                        <button class="mood-btn" data-mood="tired">😫</button>
+                        <button class="mood-btn" data-mood="sad">😢</button>
+                    </div>
+                    <p id="moodMessage" class="mood-message"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-cog"></i> Settings</h2>
+                <button class="modal-close" id="closeSettings"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>Daily Step Goal</label>
+                    <input type="number" id="goalInput" value="10000" min="1000" max="100000">
+                </div>
+                <div class="setting-group">
+                    <label>Stride Length (cm)</label>
+                    <input type="number" id="strideInput" value="75" min="30" max="150">
+                </div>
+                <div class="setting-group">
+                    <label>Weight (kg)</label>
+                    <input type="number" id="weightInput" value="70" min="20" max="300">
+                </div>
+                <div class="setting-group">
+                    <label>Notifications</label>
+                    <label class="switch">
+                        <input type="checkbox" id="notifToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Sound Effects</label>
+                    <label class="switch">
+                        <input type="checkbox" id="soundToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Hourly Reminders</label>
+                    <label class="switch">
+                        <input type="checkbox" id="reminderToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label>Units</label>
+                    <select id="unitSelect">
+                        <option value="metric">Metric (km)</option>
+                        <option value="imperial">Imperial (mi)</option>
+                    </select>
+                </div>
+                <button id="saveSettings" class="btn-primary full-width">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-circle"></i> Profile</h2>
+                <button class="modal-close" id="closeProfile"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-avatar">
+                    <div class="avatar-circle" id="avatarCircle">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label>Name</label>
+                    <input type="text" id="profileName" placeholder="Your Name">
+                </div>
+                <div class="setting-group">
+                    <label>Age</label>
+                    <input type="number" id="profileAge" placeholder="25">
+                </div>
+                <div class="setting-group">
+                    <label>Gender</label>
+                    <select id="profileGender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="profile-stats">
+                    <div class="profile-stat">
+                        <span id="totalStepsAll" class="profile-stat-value">0</span>
+                        <span class="profile-stat-label">Total Steps</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span id="totalDistAll" class="profile-stat-value">0 km</span>
+                        <span class="profile-stat-label">Total Distance</span>
+                    </div>
+                    <div class="profile-stat">
+                        <span id="totalCalAll" class="profile-stat-value">0</span>
+                        <span class="profile-stat-label">Total Calories</span>
+                    </div>
+                </div>
+                <button id="saveProfile" class="btn-primary full-width">Save Profile</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Steps Modal -->
+    <div id="customStepsModal" class="modal hidden">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Add Custom Steps</h2>
+                <button class="modal-close" id="closeCustom"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label>Number of Steps</label>
+                    <input type="number" id="customStepInput" placeholder="500" min="1" max="50000">
+                </div>
+                <button id="confirmCustomSteps" class="btn-primary full-width">Add Steps</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content">
+            <i id="toastIcon" class="fas fa-check-circle"></i>
+            <span id="toastMessage">Notification</span>
+        </div>
+    </div>
+
+    <!-- Achievement Popup -->
+    <div id="achievementPopup" class="achievement-popup hidden">
+        <div class="achievement-content">
+            <div class="achievement-icon" id="achieveIcon">🏆</div>
+            <h3>Achievement Unlocked!</h3>
+            <p id="achieveTitle">-</p>
+            <p id="achieveDesc">-</p>
+            <button id="closeAchieve" class="btn-primary">Awesome!</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
